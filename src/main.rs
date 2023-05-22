@@ -1,5 +1,7 @@
 use eframe::egui;
 use wifi_qr_code::{AuthenticationType, Visibility, WifiCredentials};
+use wifi_qr_code::QrCodeEcc;
+use std::fs::File;
 
 
 fn main() {
@@ -26,7 +28,17 @@ struct Wifi{
 }
 
 impl Wifi{
-    fn  generateqrcode(){
+    fn  generateqrcode(&mut self){
+        let wifi_cred=WifiCredentials{
+            ssid:String::from(self.name.to_owned()),
+            //if self.auth_type =="WPA"{
+            authentication_type:AuthenticationType::WPA(String::from(self.password.to_owned())),
+           // }
+            visibility:Visibility::Visible,
+        };
+        let png_file=File::create("wifi_qr.png").expect("failed");
+        let image= wifi_qr_code::encode_as_png(&wifi_cred, QrCodeEcc::Medium, 200, png_file);
+
         println!("hello world");
     }
 }
@@ -53,7 +65,7 @@ impl eframe::App for Wifi{
             ui.text_edit_singleline(&mut self.password);
 
             if ui.button("generate").clicked(){
-                Wifi::generateqrcode();
+                Wifi::generateqrcode(self);
             }
         });
     }
