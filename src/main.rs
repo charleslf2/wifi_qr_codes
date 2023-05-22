@@ -25,6 +25,11 @@ struct Wifi{
     password:String,  
 }
 
+impl Wifi{
+    fn  generateqrcode(){
+        println!("hello world");
+    }
+}
 
 impl Default for Wifi{
     fn default()->Self{
@@ -46,6 +51,10 @@ impl eframe::App for Wifi{
             ui.text_edit_singleline(&mut self.auth_type);
             ui.label("The Password");
             ui.text_edit_singleline(&mut self.password);
+
+            if ui.button("generate").clicked(){
+                Wifi::generateqrcode();
+            }
         });
     }
 }
