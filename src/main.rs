@@ -23,20 +23,18 @@ fn main() {
 
 struct Wifi{
     name:String,
-    auth_type:String,
     password:String,  
+    image_name:String,
 }
 
 impl Wifi{
     fn  generateqrcode(&mut self){
         let wifi_cred=WifiCredentials{
             ssid:String::from(self.name.to_owned()),
-            //if self.auth_type =="WPA"{
             authentication_type:AuthenticationType::WPA(String::from(self.password.to_owned())),
-           // }
             visibility:Visibility::Visible,
         };
-        let png_file=File::create("wifi_qr.png").expect("failed");
+        let png_file=File::create(self.image_name.to_owned()+ ".png").expect("failed");
         let image= wifi_qr_code::encode_as_png(&wifi_cred, QrCodeEcc::Medium, 200, png_file);
 
         println!("hello world");
@@ -47,8 +45,8 @@ impl Default for Wifi{
     fn default()->Self{
         Self{
             name:"CANALBOX-B9F7-2G".to_owned(),
-            auth_type:"WPA".to_owned(),
             password:"1234".to_owned(),
+            image_name:"new_qr_code".to_owned(),
 
         }
     }
@@ -59,10 +57,10 @@ impl eframe::App for Wifi{
         egui::CentralPanel::default().show(ctx, |ui|{
             ui.label("Wifi Name");
             ui.text_edit_singleline(&mut self.name);
-            ui.label("Authentication type");
-            ui.text_edit_singleline(&mut self.auth_type);
             ui.label("The Password");
             ui.text_edit_singleline(&mut self.password);
+            ui.label("qr code name");
+            ui.text_edit_singleline(&mut self.image_name);
 
             if ui.button("generate").clicked(){
                 Wifi::generateqrcode(self);
