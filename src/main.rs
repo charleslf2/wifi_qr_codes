@@ -40,7 +40,21 @@ impl Default for Wifi{
 impl eframe::App for Wifi{
     fn update(&mut self, ctx:&egui::Context, _frame:&mut eframe::Frame){
         egui::CentralPanel::default().show(ctx, |ui|{
-            ui.heading("Hello world");
+            ui.label("Wifi Name");
+            ui.text_edit_singleline(&mut self.name);
+            ui.label("Authentication type");
+            ui.text_edit_singleline(&mut self.auth_type);
+            ui.label("The Password");
+            ui.text_edit_singleline(&mut self.password);
         });
     }
 }
+
+
+
+
+
+
+
+
+
