@@ -1,3 +1,4 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use eframe::egui;
 use wifi_qr_code::{AuthenticationType, Visibility, WifiCredentials};
 use wifi_qr_code::QrCodeEcc;
@@ -9,6 +10,7 @@ fn main() ->Result<(), eframe::Error>{
         initial_window_size:Some(egui::vec2(300.0, 220.0)),
         resizable:false,
         maximized:false,
+        max_window_size:Some(egui::vec2(300.0, 220.0)),
         ..Default::default()
     };
 
@@ -69,7 +71,7 @@ impl eframe::App for Wifi{
             ui.label("qr code name");
             ui.text_edit_singleline(&mut self.image_name);
 
-            ui.separator();
+            ui.add_space(7.0);
 
             if ui.button("generate").clicked(){
                 Wifi::generateqrcode(self);
@@ -82,12 +84,5 @@ impl eframe::App for Wifi{
     }
     
 }
-
-
-
-
-
-
-
 
 
